@@ -57,7 +57,7 @@ knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
 ***
 ## Welcome to Week 4! `r emo::ji("wave")`
 
-Today's session will focus on regular expressions, a powerful tool for extracting information from unstructured text data and the `stringr` package, which provides a cohesive set of functions designed to make string manipulation easier in R. There is also material on Html structure and Xpath, for you to work through after the Lecture. While some of these tools may seem abstract at fiest, locating data in unstructured text and nested html structures is particularly useful when it comes to scraping data from the web, which we will cover in our next session.
+Today's session will focus on regular expressions, a powerful tool for extracting information from unstructured text data and the `stringr` package, which provides a cohesive set of functions designed to make string manipulation easier in R. There is also material on Html structure and Xpath, for you to work through after the Lecture. While some of these tools may seem abstract at first, locating data in unstructured text and nested html structures is particularly useful when it comes to scraping data from the web, which we will cover in our next session.
 
 ***
 
@@ -107,16 +107,18 @@ stringr::str_view(x, "a")
 ```
 
 :::alert-info
-**Excercise 1**: Can you find all words in that contain the sequence "ing" in the list below, and change them to be "er" instead?
+**Exercise 1**: Can you find all words in that contain the sequence "ing" in the list below, and change them to be "er" instead?
 ```{r, echo=FALSE}
 words <- c("running", "jumps", "swimming", "biking", "skates", "hiking", "fishing", "reading")
 
 # Your code here
+stringr::str_replace_all(words, c("ing" = "er", "er" = "ed"))
+stringr::str_replace_all(words, "ing", "er")
 ```
 :::
 
 :::alert-info
-**Excercise 2**: Can you find how many words in the inbuilt `stringr::words` vector contain the sequence "ise"?
+**Exercise 2**: Can you find how many words in the inbuilt `stringr::words` vector contain the sequence "ise"?
 ```{r, echo=FALSE}
 # Your code here
 
@@ -295,7 +297,6 @@ Pre-defined character classes are useful because they are efficient and let us
 
 ```{r}
 unlist(str_extract_all(example.obj, "[[:punct:]ABC]"))
-unlist(str_extract_all(example.obj, "[^[:alnum:]]"))
 ```
 
 ### Meta symbols in character classes
@@ -306,6 +307,7 @@ Within a character class, most meta-characters lose their special meaning. There
 - `-` becomes a range specifier: `[a-d]` matches any character from a to d. However, `-` at the beginning or the end of a character class matches the hyphen. 
 
 ```{r}
+unlist(str_extract_all(example.obj, "[^[:alnum:]]"))
 str_extract(example.obj, "sm[a-p]ll")
 unlist(str_extract_all(example.obj, "[1-2]"))
 unlist(str_extract_all(example.obj, "[12-]"))
@@ -401,7 +403,7 @@ Finally a word of caution at the end: Since regular expressions are extremely po
 
       a. `"\\$[0-9]+"`
       a. `"^.*$"`
-      a. `"\\d{4}-\\d{2}-\\d{2}"`
+      a. `"\-\\d{\d{4}2}-\\d{2}"`
       a. `".*?\\.txt$"`
       a. `"\\\\{4}"`
       a. `"b[a-z]{1,4}"`

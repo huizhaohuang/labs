@@ -19,7 +19,7 @@ library(networkD3)
 
 
 # set temporary working directory
-tempwd <- ("../data/wikipediaStatisticians")
+tempwd <- ("data/wikipediaStatisticians")
 dir.create(tempwd)
 setwd(tempwd)
 
