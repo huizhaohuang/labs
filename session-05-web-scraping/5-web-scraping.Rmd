@@ -226,10 +226,10 @@ Your task is to extract the second paragraph from the "Roman Cologne" section of
 
 ```{r}
 # YOUR ANSWER HERE
-
+parsed_url|>
+  rvest::html_elements(xpath = '//*[@id="mw-content-text"]/div[1]/p[8]') |>
+  rvest::html_text()
 ```
-
-
 
 
 ---
@@ -279,6 +279,12 @@ Can you tell us:
 a) What does it take to be within the top-100 most streamed songs on Spotify? (i.e., how many streams?)
 b) Which artists have the highest number of most streamed songs? (Note that the `artist_s` string might contain multiple unique artists)
 
+```{r}
+spotify_table |>
+  group_by(artist_s) |>
+  summarize(n = n()) |>
+  arrange(desc(n))
+```
 
 *Bonus at home 🏠*
 
@@ -287,6 +293,18 @@ c) Which artists have the most cumulative streams?
 
 ```{r}
 # YOUR ANSWER HERE
+spotify_table |>
+  group_by(artist_s) |>
+  summarize(cumulatev_stream = sum(streams_billions)) |>
+  arrange(desc(cumulatev_stream))
+
+spotify_table |>
+  separate_rows(artist_s, sep = "\\s*(and|featuring|&|with)\\s*") |> #this will separate each artist into independent ones
+  mutate(artist_s = str_trim(artist_s)) |> #trim unnecessary whitespaces
+  group_by(artist_s) |>
+  summarise(songs = n(),
+            total_streams_billions = sum(streams_billions)) |>
+  arrange(desc(total_streams_billions))
 ```
 
 ---
