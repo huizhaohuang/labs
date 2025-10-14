@@ -7,8 +7,8 @@
 3. Iteration, automation, scheduling and debugging. \[[**.html**](https://rawcdn.githack.com/intro-to-data-science-25/labs/cd4e2b729045aeca1bfddb13829886bcbb3985dc/session-03-automation/3-automation-lab.html) | [**.Rmd**](https://github.com/intro-to-data-science-25/labs/blob/main/session-03-automation/3-automation-lab.Rmd)\]
 4. Webdata, Regex and Xpath \[[**.html**](https://raw.githack.com/intro-to-data-science-25/labs/main/session-04-webdata/4-webdata.html) | [**.Rmd**](https://github.com/intro-to-data-science-25/labs/blob/main/session-04-webdata/4-webdata.Rmd)\]
 5. Web scraping and APIs  \[[**.html**](https://raw.githack.com/intro-to-data-science-25/labs/main/session-05-web-scraping/5-web-scraping.html) | [**.Rmd**](https://github.com/intro-to-data-science-25/labs/blob/main/session-05-web-scraping/5-web-scraping.Rmd)\]
+6. Databases \[[**.html**](https://rawcdn.githack.com/intro-to-data-science-25/labs/ae9321822902dec492094314f5a31b03870d8825/session-06-databases/6-databases.html) | [**.Rmd**](https://github.com/intro-to-data-science-25/labs/blob/main/session-06-databases/6-databases.Rmd)\]
 <!--
-6. Web data and technologies \[[**.html**](https://rawcdn.githack.com/intro-to-data-science-24/labs/66e898d6c75e20ef51ab5c126900e8865715c1b1/session-05-webdata/5-webdata.html) | [**.Rmd**](https://github.com/intro-to-data-science-24/labs/blob/main/session-05-webdata/5-webdata.Rmd)\]
 7. Web scraping and APIs \[[**.html**](https://rawcdn.githack.com/intro-to-data-science-24/labs/ef7c1681527746897d8c80f8b703e8109264bc05/session-06-web-scraping/6-web-scraping.html) | [**.Rmd**](https://github.com/intro-to-data-science-24/labs/blob/main/session-06-web-scraping/6-web-scraping.Rmd)\]
 8. Modelling \[[**.html**](https://rawcdn.githack.com/intro-to-data-science-24/labs/7328e43628f9799d64eb295a3b389aaef237129a/session-07-modelling/7-modelling.html#) | [**.Rmd**](https://github.com/intro-to-data-science-24/labs/blob/main/session-07-modelling/7-modelling.Rmd)\]
 9. Visualization \[[**.html**](https://rawcdn.githack.com/intro-to-data-science-24/labs/4a6521e82003c0d3c57a12e615465522a52beb30/session-08-visualization/8-visualization.html) | [**.Rmd**](https://github.com/intro-to-data-science-24/labs/blob/main/session-08-visualization/8-visualization.Rmd)\]
@@ -21,7 +21,7 @@
 The lab sessions to the course Introduction to Data Science by [Simon Munzert](https://simonmunzert.github.io/) at the [Hertie School, Berlin](https://www.hertie-school.org/en/), are taught by [Killian Conyngham](https://github.com/Killian-Conyngham) and [Carol Sobral](https://github.com/cbsobral).
 
 ## Office hours
-If you have a specific problem you just can't seem to resolve or are feeling behind then feel free to stop by the office hours of your respective TA.
+If you have a specific problem you just can't seem to resolve or are feeling behind, then feel free to stop by the office hours of your respective TA.
 You can book a slot for Carol's Office hours [here.](https://calendar.app.google/AKJqj7PtEkA1zbCNA)
 You can book a slot for Killian's Office hours [here.](https://calendar.app.google/jL1adZtNHLKJQiq19)
 
