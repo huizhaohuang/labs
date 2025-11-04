@@ -1,8 +1,8 @@
 ---
 title: "Visualization"
 subtitle: "Telling stories with plots in R"
-author: "Carmen Garro & Sebastian Ramirez-Ruiz"
-date: "(Fall 2024) Introduction to Data Science"
+author: "Killian Conyngham & Carol Sobral"
+date: "(Fall 2025) Introduction to Data Science"
 output: 
     rmdformats::robobook:
     toc: TRUE
@@ -11,7 +11,7 @@ output:
     highlight: tango
     toc_depth: 3
     toc_float: true
-    self_contained: false
+    self_contained: true
 ---
 
 ```{=html}
@@ -200,24 +200,16 @@ Once we have our scatter plot, adapt the code to:
 
 
 ```{r, figures-side, fig.show="hold",  warning=F}
-# basic plot
-basic_scatter <- ggplot(penguins, aes(x = flipper_length_mm, y = body_mass_g)) +
+ggplot(penguins, aes(x = flipper_length_mm, y = body_mass_g)) +
   geom_point() + 
   labs(title = "Basic plot")
-
-# advanced scatter plot
-advanced_scatter <- ggplot(penguins, aes(x = flipper_length_mm, y = body_mass_g, color = species)) +
-  geom_point() +
-  labs(title = "Advanced plot",
-       x = "Flipper Length",
-       y = " Body Mass (g)",
-       color = "Species") +
-  theme_bw() +
-  theme(legend.position = "bottom")
-
-# Using gridExtra to arrange our plots side-by-side
-gridExtra::grid.arrange(basic_scatter, advanced_scatter, ncol = 2)
 ```
+
+```{r}
+# YOUR CODE HERE
+```
+
+
 
 That was the first step towards understanding the basic structure of the layers. Let's have a closer look at what plot types makes sense in which situations. The question is, how can we convey the information most effectively?
 
@@ -229,14 +221,14 @@ If we are interested in plotting distributions of our data, we can leverage geom
 
 -   `geom_histogram()`: visualizes the distribution of a single continuous variable by dividing the x axis into bins and counting the number of observations in each bin (the default is 30 bins).
 -   `geom_density()`: computes and draws kernel density estimate, which is a smoothed version of the histogram.
--   `geom_bar()`: renders barplots and in plotting distributions behaves in a very similar way from `geom_histogram()` (can also be used with two dimensions)
+-   `geom_bar()`: renders bar plots and in plotting distributions behaves in a very similar way from `geom_histogram()` (can also be used with two dimensions)
 -   `geom_boxplot()`: box plots can show distributions of variables across groups (you could also consider them as plots for relationships: between a continuous and a categorical variable)
 
 ---
 
 ## Histograms
 
-Histograms show the distribution of continuous variables. In this first example, we graph the distribution of the life expectancy variable (i.e., `lifeExp`).
+Histograms show the distribution of continuous variables. In this first example, we graph the distribution of the life expectancy variable (i.e., `lifeExp`) from the gapminder dataset.
 
 ```{r, warning = F, message = F, fig.height = 3}
 summary(df$lifeExp)
@@ -246,9 +238,8 @@ ggplot(df,
   geom_histogram()
 ```
 
-What conclusions might you draw from the histogram above about the distribution of life expectancy worldwide?
+> What conclusions might you draw from the histogram above about the distribution of life expectancy worldwide?
 
-*The distribution is not normal (i.e. not a bell curve). It is bimodal with a skew to the left. There is a cluster of country-year observations that has a lower life expectancy (approximately 45-60 years), and a cluster of countries with much higher life expectancies (approx 70 years).*
 
 The default number of bins is 30, which means that the entire range of the variable (here 23.60 to 82.60) is split into 30 equally spaced bins. We can change the number of bins manually. Below, we specify 60 bins to approximate a bin width of 1 year, **taking into account the range of the variable** `lifeExp`.
 
@@ -259,7 +250,15 @@ ggplot(df, aes(x = lifeExp)) +
   geom_histogram(bins = 60)
 ```
 
-What would happen if we specified 5 bins?
+What would happen if we specified 5 bins? Try it out. 
+
+
+```{r}
+# YOUR CODE HERE
+```
+
+
+
 
 ---
 
@@ -282,7 +281,7 @@ Another way to show the distribution of variables across groups are boxplots. Bo
 
 -   The borders of the box denote the 25th and 75th percentile.
 -   The line within the box denotes the median.
--   The position of the whiskers (vertical lines) denote the first quantile value minus 1.5 times the interquartile range and the third quantile value plus 1.5 times the interquartile range. We will not get into the details here.
+-   The position of the whiskers (vertical lines) denote the first quantile value minus 1.5 times the interquartile range and the third quantile value plus 1.5 times the interquartile range.
 -   Dots denote outliers (values that lie outside the whiskers), if applicable.
 
 In `ggplot2` we can graph boxplots across multiple variables using the `geom_boxplot()` geometric object. Here, the continuous variable (i.e. `lifeExp`) should be specified as the `y` variable, and the categorical variable (i.e. `continent`) as the `x` variable.
@@ -322,23 +321,25 @@ ggplot(subset(df), aes(x = continent, y = lifeExp)) +
 
 ## Exercise 2 - Distributions
 
-This is a histogram presenting the weight distribution of penguins in our sample. Let's adapt the code of our histogram:
+Create a histogram showing the distribution of penguin body mass using the `penguins` dataset. As you explore the plot, try the following:
 
-1.  Add `bins = 15` argument (try out different numbers)
-2.  Add `fill = "#FF6666"` (or type "red" instead of "#FF6666")
-3.  Change the geom to `_density` and `_bar`
-4.  Consider what data would be good to display in a box plot or violin plot
+1. Choose an appropriate number of bins (for example, start with bins = 15 and adjust).
 
-```{r, fig.show="hold",  warning=F, echo=F, message=F}
+1. Set a fill color using fill = "red" or a hex code such as "#FF6666".
 
-ggplot(penguins, aes(x = body_mass_g)) +
-  geom_histogram()
+1. Experiment with different geoms by replacing geom_histogram() with options like geom_density(), geom_bar(), or others.
 
-ggplot(penguins, aes(x = body_mass_g, y = species)) +
-  geom_violin(aes(fill = species), alpha = 0.5)+
-  labs(x = "Body Mass (g)",
-       y = "Species")
+```{r}
+# YOUR CODE HERE
+
 ```
+
+1. Now, look for a variable in the dataset that can be used to meaningfully group body mass. Use that variable to create a box plot or violin plot of body mass.
+
+```{r}
+# YOUR CODE HERE
+```
+
 
 ------------------------------------------------------------------------
 
@@ -357,7 +358,7 @@ ggplot(df, aes(x = gdpPercap, y = lifeExp)) +
   theme_light()
 ```
 
-The plot above shows a large amount of clustering (and overplotting) on the left side of the plot, while the right side of the plot is sparsely populated. This makes it hard to gauge the relationship between the two variables. Below, we make a few adjustments to the graph to better display the relationship.
+The plot above shows a large amount of clustering on the left side of the plot, while the right side of the plot is sparsely populated. This makes it hard to gauge the relationship between the two variables. Below, we make a few adjustments to the graph to better display the relationship.
 
 ```{r, warning = F, message = F}
 ggplot(df, aes(x = gdpPercap, y = lifeExp)) +
@@ -411,11 +412,10 @@ log10_via_scale_plot <- ggplot(df,
 gridExtra::grid.arrange(log10_direct_plot, log10_via_scale_plot, ncol = 2)
 ```
 
-Can you explain the differences between the plot applying the natural log to the variable within the `aes()` function versus using `scale_x_continuous()`?
+> Can you explain the differences between the plot applying the natural log to the variable within the `aes()` function versus using `scale_x_continuous()`?
 
-*Transforming the variable using the natural logarithm within `aes()` causes the x-axis to be displayed in log values. Using `scale_x_continuous()`, the data is transformed in the same way, however, the x-axis is displayed in the original, non-logged version.*
 
-We can use the same principle in bivariate (or multivariate) displays of data. Below, I use the `scale` transformation on the variable and reflect it in the axis label clarify that it is the relationship between life expectancy and the logarithm of GDP per capita that has a strong positive relationship.
+We can use the same principle in bivariate (or multivariate) displays of data. Below, we use the `scale` transformation on the variable and reflect it in the axis label clarify that it is the relationship between life expectancy and the logarithm of GDP per capita that has a strong positive relationship.
 
 ```{r, warning = F, message = F}
 ggplot(df, aes(x = gdpPercap, y = lifeExp)) +
@@ -427,6 +427,7 @@ ggplot(df, aes(x = gdpPercap, y = lifeExp)) +
   scale_x_log10() +
   theme_light()
 ```
+
 
 ---
 
@@ -459,7 +460,7 @@ ggplot(df, aes(x = log(gdpPercap), y = lifeExp)) +
   geom_smooth(method = "lm")
 ```
 
-Finally, we can display separate trendlines for groups of data. For example, suppose we wanted to know how the relationship between GDP per capita and life expectancy varies by continent. We can pass the grouping variable to the `color` (and/or `linetype`) parameter within the `aes()` function. Below, I further reduce the opacity of the points to avoid overplotting. Note that the color grouping is passed to both the `geom_point()` and the `geom_smooth()` aesthetic.
+Finally, we can display separate trendlines for groups of data. For example, suppose we wanted to know how the relationship between GDP per capita and life expectancy varies by continent. We can pass the grouping variable to the `color` (and/or `linetype`) parameter within the `aes()` function. Below, we further reduce the opacity of the points to avoid overplotting. Note that the color grouping is passed to both the `geom_point()` and the `geom_smooth()` aesthetic.
 
 ```{r, warning = F}
 ggplot(df, aes(x = log(gdpPercap),
@@ -494,7 +495,30 @@ ggplot(subset(df, country == "China"),
   geom_point()
 ```
 
-> ***NOTE:*** For advanced examples of line graphs using *spaghetti plots* please see this [GitHub page](https://github.com/thereseanders/workshop-dataviz-fsu/tree/master/Day1#spaghetti-plots).
+
+---
+
+## Visualising multiple time series
+
+To compare a time series across many units, we can plot all series in one figure using thin, low-opacity lines to keep the display readable. Here, we apply this approach to life expectancy over time and highlight China in red.
+
+
+```{r}
+ggplot(df,
+       aes(x = year,
+           y = lifeExp,
+           group = country)) +
+  geom_line(alpha = 0.1, 
+            linewidth = 0.1) +
+  labs(title = "Life expectancy over time",
+       x = "Year",
+       y = "Life expectancy") +
+  theme_light() +
+  geom_line(data = subset(df, country %in% "China"),
+            color = "red", linewidth = 1)
+```
+
+
 
 ---
 
@@ -506,13 +530,13 @@ Below, we use our data wrangling skills from the last sessions to compute the co
 
 ```{r}
 # Compute Pearson correlation coefficient by year and continent
-cors <- df %>% 
-  dplyr::filter(continent != "Oceania") %>% 
-  dplyr::group_by(continent, year) %>% 
+cors <- df |>  
+  dplyr::filter(continent != "Oceania") |> 
+  dplyr::group_by(continent, year) |> 
   dplyr::summarize(cor = cor(lifeExp, log10(gdpPercap)))
 ```
 
-We can use the `geom_tile()` geom to create the heatmap; specifying the variable we want to display in color via the `fill` command. We can improve the left plot in a number of ways. First, the color scheme is not necessarily intuitive. The colors aren't separated enough to best display smaller differences in the correlation coefficient, because they are based on the same hue. We can customize out colors to display a gradient with multiple hues.
+We can use the `geom_tile()` geom to create the heatmap; specifying the variable we want to display in color via the `fill` command. We can improve the left plot in a number of ways. First, the color scheme is not necessarily intuitive. The colors aren't separated enough to best display smaller differences in the correlation coefficient, because they are based on the same hue. We can customize our colors to display a gradient with multiple hues.
 
 ```{r, fig.show="hold",  warning=F, message=F}
 ggplot(cors, aes(x = year, y = continent, fill = cor)) +
@@ -581,21 +605,22 @@ ggplot(cors, aes(x = year, y = continent, fill = cor)) +
 Suppose we wanted to visualize global population growth over time. We might first want to compute the total population per continent and year.
 
 ```{r, message=F, warning =F}
-globalpop <- df %>% 
-  dplyr::group_by(continent, year) %>% 
+globalpop <- df |> 
+  dplyr::group_by(continent, year) |> 
   
   # Need to transform int to num to prevent integer overflow
   dplyr::summarize(pop_tot = sum(as.numeric(pop)))
-```
 
-`ggplot2()` is pretty nice and it just stacked each continent's population on top of each other. This is nice because it it automatically allows us to visualize the sum across continents. Try to verify that the height of each bar is truly the sum of all continents' population. We could illustrate that these are indeed separate continents by passing a `fill` argument within `aes()`. If we instead wanted a separate bar for each continent, we can use the `position` parameter within `geom_col()`.
 
-```{r, fig.show="hold",  warning=F, message=F}
 # stacked
 ggplot(globalpop, aes(x = year, y = pop_tot, fill = continent)) +
   geom_col() +
   theme_minimal()
+```
 
+`ggplot2()` is pretty nice and it just stacked each continent's population on top of each other. If we instead wanted a separate bar for each continent, we can use the `position` parameter within `geom_col()`.
+
+```{r, fig.show="hold",  warning=F, message=F}
 # separate bars
 ggplot(globalpop,
        aes(x = year, y = pop_tot, fill = continent)) +
@@ -606,9 +631,9 @@ ggplot(globalpop,
 Suppose we wanted to know which countries in Europe are shrinking and which countries are growing in terms of their population. We can use our data wrangling skills to compute the most recent change in population by taking the current value and subtracting the previous year's value.
 
 ```{r}
-diff07 <- df %>% 
-  dplyr::group_by(country) %>%
-  dplyr::arrange(year) %>% 
+diff07 <- df |> 
+  dplyr::group_by(country) |>
+  dplyr::arrange(year) |> 
   dplyr::mutate(fd = pop - dplyr::lag(pop))
 ```
 
@@ -621,7 +646,7 @@ ggplot(subset(diff07, continent == "Europe" & year == 2007),
   theme_minimal()
 ```
 
-This is really hard to see. Lets flip the axes using `coord_flip()`. This could useful because countries are ordered alphabetically, but visually, it is is confusing. Let's reorder the country axis based on the value of the population change. The default is ro order the points in ascending order from the origin.
+This is really hard to see. Let's flip the axes using `coord_flip()`. This could useful because countries are ordered alphabetically, but visually, it is confusing. Let's reorder the country axis based on the value of the population change. The default is to order the points in ascending order from the origin.
 
 ```{r, fig.show="hold",  fig.height = 6 , warning=F, message=F}
 ggplot(subset(diff07, continent == "Europe" & year == 2007),
@@ -642,25 +667,10 @@ ggplot(subset(diff07, continent == "Europe" & year == 2007),
 
 ## Exercise 3 - Relationships
 
-You now know that we can utilize graphs to explore how different variables are related. In fact, we did so before in our very first scatterplot. We can also use box plots and lines to show some of these relationships.
+Create a scatter plot to explore the relationship between `flipper_length_mm` and `body_mass_g`. Then, color by a grouping variable (of your choice) and add linear trend lines.
 
-1.  Create a boxplot showcasing the distribution of weight by species.
-2.  Adapt our very first plot with lines that best fit the observed data by species.
-
-```{r, fig.show="hold",  warning=F, message=F, echo=F}
-ggplot(penguins, aes(x = species, y = body_mass_g)) +
-  geom_boxplot() +
-  theme_minimal() +
-  labs(x = "Species",
-       y = "Body mass (g)")
-
-ggplot(penguins, aes(x = flipper_length_mm, y = body_mass_g, color = species)) +
-  geom_point() + 
-  geom_smooth(method = "lm", se = F) +
-  theme_minimal() +
-  labs(x = "Length of the flipper",
-       y = "Body mass (g)",
-       color = "Species")
+```{r}
+# YOUR CODE HERE
 ```
 
 ---
@@ -703,7 +713,7 @@ ggplot(df, aes(x = lifeExp)) +
 
 
 :::{.alert-info .pad-box}
-**Caution!!** 
+**Caution!** 
 
 You will sometimes see the command `scale_y_continuous(limits = c(0, 85))` instead of `coord_cartesian(ylim = c(0, 85))`. Note that these are not the same. `coord_cartesian()` only adjusts the range of the axes (it "zooms" in and out), while `scale_y_continuous(limits = c())` subsets the data. For density plots, this does not make a difference. But there are other examples where it alters the actual shape of the graph, rather than just the part of the graph that is visible.
 :::
@@ -745,7 +755,7 @@ ggplot(df, aes(x = lifeExp)) +
   theme_minimal()
 ```
 
-We can also use hexadecimal or RGB (red, green, blue) strings to specify colors. There are plenty of online tools to pick colors and extract hexadecimal or RBG strings. One of my favorites is [this one](http://www.colorhexa.com). This online tool allows you to specify a color name, hexadecimal, or RGB string, and returns information on color schemes, complementary colors, as well as alternative shades, tints, and tones. It also offers a color blindness simulator.
+We can also use hexadecimal or RGB (red, green, blue) strings to specify colors. There are plenty of online tools to pick colors and extract hexadecimal or RBG strings. One of our favorites is [this one](http://www.colorhexa.com). This online tool allows you to specify a color name, hexadecimal, or RGB string, and returns information on color schemes, complementary colors, as well as alternative shades, tints, and tones. It also offers a color blindness simulator.
 
 Suppose, I like the general tone of the darkblue color above but am worried that it is a bit too dark for my plot. I enter the color "darkblue" into the search field at <http://www.colorhexa.com> and look for a brighter alternative. Suppose I really like the color displayed in the second tile from the left on the tints scale. I can extract this color's hexadecimal value of `#2727ff` by hovering over the tile of that color.
 
@@ -857,9 +867,6 @@ ggplot(df, aes(x = lifeExp, color = continent)) +
   theme_bw()
 ```
 
-What is the difference between specifying the `color` parameter outside the `aes()` argument versus within the `aes()` argument?
-
-*If the color parameter is specified outside the `aes()` argument, one color is passed all geometric objects of the same type. If the color parameter is specified within the `aes()` argument, different colors are passed to each value of the variable that is passed to the `color` parameter. A separate geometric object will be plotted for value--each in a different color.*
 
 We can adjust the colors used in the plot in a variety of ways. Below, we first use the `scale_color_manual()` function. This will change the colors in both the plot and the legend, based on our manual specification. Within the `scale_color_manual()` argument, we can also specify a name and labels for the legend.
 
@@ -896,9 +903,6 @@ ggplot(df, aes(x = lifeExp, color = continent)) +
 
 Check out the list of color palettes compiled by [Emil Hvitfeldt](https://github.com/EmilHvitfeldt/r-color-palettes/blob/master/type-sorted-palettes.md#sequential-color-palettes). There is even a Wes Anderson movies inspired color scheme available using the package [wesanderson](https://github.com/karthik/wesanderson#the-isle-of-dogs-2018)! Another popular option are the color schemes from the [viridis](https://cran.r-project.org/web/packages/viridis/vignettes/intro-to-viridis.html) package due to their desirable properties with respect to colorblindness and printability.
 
-:::{.alert-info .pad-box}
-It might be a good investment to [create a personalized color palette](https://rfortherestofus.com/2023/01/how-to-make-your-own-color-palettes-in-ggplot).I like to use tools that help me implement graphic design best practices, for example [Adobe Color](https://color.adobe.com/create/color-wheel)
-:::
 
 ---
 
@@ -958,49 +962,9 @@ ggplot(subset(df, continent != "Oceania"),
 
 Create a plot to compare the GDP per capita development of the BRICS countries (Brazil, Russia, India, China, South Africa). Unfortunately, Russia (or previously the Soviet Union) is not part of the `gapminder` data, so we cannot display it in the plot.
 
-Please create a publication-ready graph that can be printed (do you have ideas what we could do for grayscale printing?).
 
-```{r, warning = F, fig.width = 8, fig.height = 4, echo = FALSE, message = F}
-ggplot(
-  subset(df, country %in% c("Brazil", "Russia", "China", "India", "South Africa")),
-  aes(x = year,
-      y = gdpPercap,
-      linetype = country,
-      shape = country, #shape would work for greyscale
-      colour = country)) + 
-  geom_line(alpha = 0.5) +
-  geom_point(alpha = 0.8,
-             size = 0.8) +
-  theme_light() +
-  scale_shape_discrete(name = "Country") +
-  scale_linetype_discrete(name = "Country") +
-  labs(title = "GDP per capita in BRICS countries",
-       x = "Year",
-       y = "GDP per capita")+
-  guides(colour = guide_legend(override.aes = list(shape = c(16, 17, 15, 7)))) + # override the color legend
-  scale_shape(guide = "none")+ # this is now integrated in the colour guide
-  scale_linetype(guide = "none") # you could also add line types when overriding the color guide
-
-
-# or alternatively, just hide the two other legends
-# guides(shape = "none", linetype = "none") 
-
-```
-
-```{r, warning = F, fig.height = 3, fig.width = 8, echo = FALSE, message = F}
-ggplot(
-  subset(df, country %in% c("Brazil", "Russia", "China", "India", "South Africa")),
-  aes(x = year,
-      y = gdpPercap)) +
-  geom_line(alpha = 0.5) +
-  geom_point(alpha = 0.8,
-             size = 0.4) +
-  theme_light() +
-  labs(title = "GDP per capita in BRICS countries",
-       x = "Year",
-       y = "GDP per capita") +
-  facet_wrap(~country, nrow = 1) +
-  scale_x_continuous(breaks = seq(1950,2000, 25))
+```{r}
+# YOUR CODE HERE
 
 ```
 
@@ -1008,7 +972,7 @@ ggplot(
 
 # Saving plots `r emo::ji("floppy_disk")`
 
-We can output your plots to many different format using the `ggsave()` function, including but not limited to `.pdf`, `.jpeg`, `.bmp`, `.tiff`, or `.eps`. Here, we output the graph as a Portable Network Graphics (.png) file. We can specify the size of the output graph as well as the resolution in dots per inch (dpi). If no graph is specified, `ggsave()` will save the last graph that was executed. If we no not specify the complete file path, the plot will be saved to your working directory.
+We can output your plots to many different format using the `ggsave()` function, including but not limited to `.pdf`, `.jpeg`, `.bmp`, `.tiff`, or `.eps`. Here, we output the graph as a Portable Network Graphics (.png) file. We can specify the size of the output graph as well as the resolution in dots per inch (dpi). If no graph is specified, `ggsave()` will save the last graph that was executed. If we do not specify the complete file path, the plot will be saved to your working directory.
 
 ```{r, warning = F, message = F}
 # ggsave("panel_lifeexp_continent.png", width = 6, height = 3, dpi = 400)
@@ -1059,4 +1023,4 @@ In case you're already thinking about Christmas gifts, want to have some more co
 
 This tutorial is based largely on chapters 7 to 10 from the [Quantitative Politics with R book](https://github.com/erikgahner/qpolr/blob/master/README.md) and [Wilkinson, L., 2012. The grammar of graphics](https://link.springer.com/book/10.1007/0-387-28695-0). In Handbook of Computational Statistics (pp. 375-414). Springer, Berlin, Heidelberg.
 
-This script was drafted by [Tom Arendt](https://github.com/tom-arend) and [Lisa Oswald](https://lfoswald.github.io/), with contributions by [Steve Kerr](https://smkerr.github.io/), [Hiba Ahmad](https://github.com/hiba-ahmad), [Carmen Garro](https://github.com/cgarroca), and [Sebastian Ramirez-Ruiz](https://seramirezruiz.github.io/).
+This script was drafted by [Tom Arendt](https://github.com/tom-arend) and [Lisa Oswald](https://lfoswald.github.io/), with contributions by [Steve Kerr](https://smkerr.github.io/), [Hiba Ahmad](https://github.com/hiba-ahmad), [Carmen Garro](https://github.com/cgarroca), [Sebastian Ramirez-Ruiz](https://seramirezruiz.github.io/), [Killian Conyngham](https://github.com/Killian-Conyngham) and [Carol Sobral](https://github.com/cbsobral).

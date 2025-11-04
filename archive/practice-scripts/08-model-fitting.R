@@ -5,6 +5,7 @@ library(broom)
 library(nycflights13)
 library(modelsummary)
 library(lme4)
+library(janitor)
 
 
 ## crafting formulas ------------------------------
@@ -31,6 +32,11 @@ y ~ x1 * x2 # That's equivalent to
 y ~ x1 + x2 + x1*x2
 y ~ x1:x2  # only interaction, not main effects
 
+# Example
+tabyl(flights$origin)
+summary(lm(arr_delay ~ distance + origin, data = flights))
+summary(lm(arr_delay ~ distance*origin, data = flights))
+
 
 # As-is variables
 y ~ x + I(x^2)
@@ -51,6 +57,10 @@ browseURL("https://stat.ethz.ch/R-manual/R-devel/library/stats/html/formula.html
 
 
 ## advanced crafting of formulas: fitting multiple models ------------------------------
+
+combn(1:6, 2)
+choose(6, 1:6)
+
 
 # Create a formula for a model with a large number of variables:
 xnam <- paste0("x", 1:25)
