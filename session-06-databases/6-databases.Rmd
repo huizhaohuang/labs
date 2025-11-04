@@ -99,6 +99,7 @@ For the simple examples that we will see here, we'll need some data sets that co
 
 ```{r, echo = F}
 library(nycflights13)
+library(tidyverse)
 # flights 
 # planes
 # airlines
@@ -163,6 +164,15 @@ You need to identify flights operated by planes that **aren't in the registratio
 
 a) Find all flights where the plane's `tailnum` doesn't appear in the `planes` registry. How many flights were operated by unregistered aircraft?
 
+```{r}
+flights |>
+  anti_join(
+    planes,
+    by = "tailnum"
+  ) |>
+  count()
+```
+
 b) Which airline has the most flights with unregistered planes? 
 
 *Hint: Think about which type of join keeps rows from the first table that DON'T have a match in the second table.*
@@ -170,7 +180,15 @@ b) Which airline has the most flights with unregistered planes?
 :::
 
 ```{r}
-
+flights |>
+  anti_join(
+    planes,
+    by = "tailnum"
+  ) |>
+  group_by(carrier) |>
+  count()|>
+  arrange(desc(n))|>
+  left_join(airlines, by = "carrier")
 ```
 
 
@@ -204,6 +222,7 @@ Accessing databases in R requires a few packages:
     -   and `bigrquery::bigquery()` for BigQuery.
 
 ```{r, include=FALSE}
+install.packages("pacman")
 pacman::p_load(RSQLite, DBI, bigrquery, dbplyr) # getting packages we might need
 ```
 
@@ -408,7 +427,7 @@ b) Add the `airports` table to the database with the appropriate index.
 :::
 
 ```{r}
-
+View(nycflights13::airports)
 ```
 
 
@@ -417,6 +436,13 @@ Now let us call `DBI::dbListTables()` again on our "con" database connection. As
 
 ```{r}
 DBI::dbListTables(con)
+dplyr::copy_to(
+  dest = con, 
+  df = nycflights13::airports, 
+  name = "airports",
+  temporary = FALSE, 
+  indexes = "faa"
+)
 ```
 
 ------------------------------------------------------------------------

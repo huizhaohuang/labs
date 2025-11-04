@@ -119,7 +119,8 @@ pacman::p_load(kableExtra, # for nicely outputted HTML tables
                specr, # to conduct specification curve analyses
                janitor, # to clean up out data
                modelr, # tidy syntax modelling
-               wesanderson) # color palette for ggplot2
+               wesanderson,
+               tidymodel) # color palette for ggplot2
 
 # load data
 life_expec_dat <- readr::read_csv("life_expectancy.csv") |> 
@@ -209,6 +210,21 @@ Using the two-step approach, create formulas that perform the following regressi
 
 ```{r, echo= FALSE}
 # your code here
+
+formula_string <- paste("life_expectancy", "~ gdp + population + alcohol")
+formula <- as.formula(formula_string)
+reg_1 <- lm(formula, data = life_expec_dat) 
+tidy(reg_1)
+
+formula_string2 <- paste("life_expectancy", "~ gdp * population + alcohol")
+formula2 <- as.formula(formula_string2)
+reg_2 <- lm(formula2, data = life_expec_dat) 
+tidy(reg_2)
+
+formula_string3 <- paste("life_expectancy", "~ gdp + I(gdp^2) + log(population)")
+formula3 <- as.formula(formula_string3)
+reg3 <- lm(formula3, data = life_expec_dat)
+summary(reg3)
 ```
 :::
 
@@ -332,6 +348,9 @@ Look at the `multiv_model_out` object that you have just created. Try to get a s
 
 ```{r, echo= FALSE}
 # your code here
+summary(multiv_model_out[[10]])
+summary(multiv_model_out[[25]])
+summary(multiv_model_out[[31]])
 ```
 :::
 
@@ -609,7 +628,23 @@ Our implementation of `modelsummary` above is good, but it can be improved furth
 
 
 ```{r, echo= FALSE}
+mod_table1 <- modelsummary::modelsummary(multiv_model_out[29:31], 
+                                        output = "kableExtra",
+                                        fmt = fmt_significant(2),  # 2-digits and trailing 0  
+                                        estimate  = "{estimate}",
+                                        statistic = "conf.int",
+                                        coef_omit = "Intercept",
+                                        coef_rename=c("gdp"="Gdp", 
+                                                      "bmi"="Avg. BMI", 
+                                                      "alcohol" = "Alcohol Consum.",
+                                                      "hiv_aids"= "HIV cases", 
+                                                      "percentage_expenditure" = "Health Expenditure (% of GDP)",
+                                                      "life_expectancy" = "Life Expectancy"),
+                                        gof_omit = 'DF|Deviance|Log.Lik|AIC|BIC',
+                                        title = 'An Improved Regression Table',
+                                        escape = FALSE)
 
+mod_table1
 ```  
 :::
 ---
