@@ -1,8 +1,4 @@
-library(plotly)
-library(ggplot2)
-library(dplyr)
-library(viridis)
-library(hrbrthemes)
+pacman::p_load(ggplot2, plotly, dplyr)
 if (FALSE) {
   library(RSQLite)
   library(dbplyr)
@@ -13,17 +9,17 @@ if (FALSE) {
 
 
 # Set up handles to database tables on app start
-db <- src_sqlite("movies.db")
-omdb <- tbl(db, "omdb")
-tomatoes <- tbl(db, "tomatoes")
+db <- dplyr::src_sqlite("movies.db")
+omdb <- dplyr::tbl(db, "omdb")
+tomatoes <- dplyr::tbl(db, "tomatoes")
 
 # Join tables, filtering out those with <10 reviews, and select specified columns
-all_movies <- inner_join(omdb, tomatoes, by = "ID") %>%
-  filter(Reviews >= 10) %>%
-  select(ID, imdbID, Title, Year, Rating_m = Rating.x, Runtime, Genre, Released,
-         Director, Writer, imdbRating, imdbVotes, Language, Country, Oscars,
-         Rating = Rating.y, Meter, Reviews, Fresh, Rotten, userMeter, userRating, userReviews,
-         BoxOffice, Production, Cast)
+all_movies <- dplyr::inner_join(omdb, tomatoes, by = "ID") %>%
+  dplyr::filter(Reviews >= 10) %>%
+  dplyr::select(ID, imdbID, Title, Year, Rating_m = Rating.x, Runtime, Released,
+                Director, Writer, imdbRating, imdbVotes, Language, Country, Oscars,
+                Rating = Rating.y, Meter, Reviews, Fresh, Rotten, userMeter, userRating, userReviews,
+                BoxOffice, Production, Cast)
 
 # Variables that can be put on the x and y axes
 axis_vars <- c(
@@ -34,7 +30,6 @@ axis_vars <- c(
   "Year" = "Year",
   "Length (minutes)" = "Runtime"
 )
-
 
 # Custom Function ---------------------------------------------------------
 
@@ -50,9 +45,14 @@ actionLink <- function(inputId, ...) {
 # Define UI ---------------------------------------------------------------
 
 ui <- fluidPage(
-  titlePanel("Movie explorer"),
+  # Title panel 
+  titlePanel("IDS — Movie explorer tool"),
+  
+  # Main body
   fluidRow(
+    # left hand panel (width of 3)
     column(3,
+           # Filtering panel
            wellPanel(
              h4("Filter"),
              sliderInput("reviews", "Minimum number of reviews on Rotten Tomatoes",
@@ -63,17 +63,11 @@ ui <- fluidPage(
                          0, 4, 0, step = 1),
              sliderInput("boxoffice", "Dollars at Box Office (millions)",
                          0, 800, c(0, 800), step = 1),
-             
-             #### Answer to Exercise 1:
-             selectInput("genre", "Genre (a movie can have multiple genres)",
-                         c("All", "Action", "Adventure", "Animation", "Biography", "Comedy",
-                           "Crime", "Documentary", "Drama", "Family", "Fantasy", "History",
-                           "Horror", "Music", "Musical", "Mystery", "Romance", "Sci-Fi",
-                           "Short", "Sport", "Thriller", "War", "Western")
-             ),
              textInput("director", "Director name contains (e.g., Miyazaki)"),
              textInput("cast", "Cast names contains (e.g. Tom Hanks)")
            ),
+           
+           # Plot axis selector
            wellPanel(
              selectInput("xvar", "X-axis variable", axis_vars, selected = "Meter"),
              selectInput("yvar", "Y-axis variable", axis_vars, selected = "Reviews"),
@@ -85,7 +79,9 @@ ui <- fluidPage(
              ))
            )
     ),
+    # right hand panel (width of 9)
     column(9,
+           # specifying plotly::ggplotly() output
            plotlyOutput("plot1"),
            wellPanel(
              span("Number of movies selected:",
@@ -101,10 +97,8 @@ ui <- fluidPage(
 
 server <- function(input, output, session) {
   
-  # Filter the movies, returning a data frame
+  # Filter the movies, returning a data frame (inputs from sliders and text boxes)
   movies <- reactive({
-    # Due to dplyr issue #318, we need temp variables for input values
-    imdb_ratings <- input$imdbRating
     reviews <- input$reviews
     oscars <- input$oscars
     minyear <- input$year[1]
@@ -114,7 +108,7 @@ server <- function(input, output, session) {
     
     # Apply filters
     m <- all_movies %>%
-      filter(
+      dplyr::filter(
         Reviews >= reviews,
         Oscars >= oscars,
         Year >= minyear,
@@ -122,17 +116,13 @@ server <- function(input, output, session) {
         BoxOffice >= minboxoffice,
         BoxOffice <= maxboxoffice
       ) %>%
-      arrange(Oscars)
+      dplyr::arrange(Oscars)
     
-    #### Answer to Exercise 1 
-    # Optional: filter by genre
-    if (input$genre != "All") {
-      genre <- paste0("%", input$genre, "%")
-      m <- m %>% filter(Genre %like% genre)
-    }
-
     # Optional: filter by director
     if (!is.null(input$director) && input$director != "") {
+      # As our data is an SQL database, we need to use SQL LIKE syntax to match patterns in strings
+      # This works similarly to Regular Expressions, but with % as a wildcard for any number of characters
+      # Hint: for excercise 3 you can just copy this block of code and change it to match the inputted Genre.
       director <- paste0("%", input$director, "%")
       m <- m %>% filter(Director %like% director)
     }
@@ -142,7 +132,7 @@ server <- function(input, output, session) {
       m <- m %>% filter(Cast %like% cast)
     }
     
-    
+    # return m
     m <- as.data.frame(m)
     
     # Add column which says whether the movie won any Oscars
@@ -153,15 +143,13 @@ server <- function(input, output, session) {
     m
   })
   
-  
-  
   # Function for generating tooltip text
   movie_tooltip <- function(x) {
     if (is.null(x)) return(NULL)
     if (is.null(x$ID)) return(NULL)
     
     # Pick out the movie with this ID
-    all_movies <- isolate(movies())
+    all_movies <- shiny::isolate(movies()) # avoid having a reactive movies df
     movie <- all_movies[all_movies$ID == x$ID, ]
     
     paste0("<b>", movie$Title, "</b><br>",
@@ -170,47 +158,49 @@ server <- function(input, output, session) {
     )
   }
   
-  # A reactive expression with the plotly plot
-  output$plot1 <- renderPlotly({
-    # Lables for axes
+  # A reactive expression with the ggplot2 plot
+  vis <- reactive({
     xvar_name <- names(axis_vars)[axis_vars == input$xvar]
     yvar_name <- names(axis_vars)[axis_vars == input$yvar]
     
-    # Normally we could do something like props(x = ~BoxOffice, y = ~Reviews),
-    # but since the inputs are strings, we need to do a little more work.
-    xvar <- movies()[, input$xvar]
-    yvar <- movies()[, input$yvar]
+    df <- movies()  # store once so we don't call movies() repeatedly
     
-    p <- movies() %>% 
-      ggplot(aes(
-        x = xvar,
-        y = yvar,
-        fill = has_oscar,
-        colour = has_oscar,
-        ### Answer to Exercise 2:
-        size = BoxOffice,
-        text = paste0(
-          "<b>", Title, "</b><br>",
-          "Year: ", Year, "<br>",
-          "Box Office: $", round(BoxOffice / 1000000, digits = 1), "m"
-        )
-      )) +
-      geom_point(shape = 21) +
-      ### Answer to Exercise 2:
-      scale_size() +
-      scale_fill_viridis(discrete=TRUE, option="C", name = "Won an Oscar", labels = c("Yes", "No"), alpha = 0.7) +
-      scale_colour_viridis(discrete=TRUE, guide="none", option="C", alpha = 0.9) +
-      theme_ipsum() +
-      ylab(paste(yvar_name)) +
-      xlab(paste(xvar_name)) +
-      guides(fill=guide_legend(title="Won an Oscar"))
+    # Build ggplot
+    p <- ggplot(
+      df,
+      aes_string(
+        x = input$xvar,
+        y = input$yvar,
+        fill = "has_oscar",
+        colour = "has_oscar",
+        text = "paste0(
+        '<b>', Title, '</b><br>',
+        'Year: ', Year, '<br>',
+        'Box Office: $', round(BoxOffice / 1000000, digits = 1), 'm'
+      )"
+      )
+    ) +
+      geom_point(shape = 21, alpha = 0.7) +
+      scale_fill_manual(values = c("Yes" = "orange", "No" = "gray"),name = "Won an Oscar") +
+      scale_color_manual(values = c("Yes" = "orange", "No" = "gray"),guide = "none") +
+      labs(
+        x = xvar_name,
+        y = yvar_name
+      ) +
+      theme_minimal()
     
+    # Convert to plotly
     ggplotly(p, tooltip = "text", height = 400)
+  })
+  
+  
+  # Render plotly output
+  output$plot1 <- renderPlotly({
+    vis()
   })
   
   output$n_movies <- renderText({ nrow(movies()) })
 }
-
 
 
 # Compiling the App -------------------------------------------------------

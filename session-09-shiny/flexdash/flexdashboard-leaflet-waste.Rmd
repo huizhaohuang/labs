@@ -1,6 +1,6 @@
 ---
 title: "Waste Lands - America's forgotten nuclear legacy"
-author: IDS 2024 slight adaptation from Philipp Ottolinger's dashboard
+author: IDS 2025 slight adaptation from Philipp Ottolinger's dashboard
 output: 
   flexdashboard::flex_dashboard:
     theme: journal

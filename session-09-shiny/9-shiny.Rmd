@@ -1,8 +1,8 @@
 ---
 title: "Shiny Applications"
 subtitle: "Creating interactive Web applications with R"
-author: "Carmen Garro & Sebastian Ramirez-Ruiz"
-date: "(Fall 2024) Introduction to Data Science"
+author: "Killian Conyngham & Carol Sobral"
+date: "(Fall 2025) Introduction to Data Science"
 output: 
     rmdformats::robobook:
     toc: TRUE
@@ -181,7 +181,8 @@ We can guess what is going on by reading their names. We might imagine that this
 :::{.alert-info .pad-box}
 📝 **Note**
 
-The ability to easily see hierarchy through indentation is one of the reasons it is a good idea to use a consistent style when building these apps. :::
+The ability to easily see hierarchy through indentation is one of the reasons it is a good idea to use a consistent style when building these apps.
+:::
 
 ------------------------------------------------------------------------
 
@@ -302,6 +303,22 @@ Each `render*` function takes a single argument: an R expression surrounded by b
 
 ------------------------------------------------------------------------
 
+## Exercises
+:::{.alert-info .pad-box}
+Now it is your turn, adapt the Shiny app by:
+
+1.  Give the scatter plot a Title that updates based on the selected x and y variables.
+    -   Hint: Start by just giving it a title, then work on making it dynamic.
+2.  Turn our scatter plot into a bubble plot, where the size of the bubbles is determined by the revenues generated at the Box-Office.
+3.  Adding a widget that let's you subset by genre of film:
+    -   Think about where you specify this?
+    -   Focus on filtering for only one genre at a time.
+    -   Make sure to specify what the default option should be and how we should handle it.
+    -   Genre Categories in the data include: Action, Adventure, Animation, Biography, Comedy, Crime, Documentary, Drama, Family, Fantasy, History, Horror, Music, Musical, Mystery, Romance, Sci-Fi, Short, Sport, Thriller, War, Western.
+
+:::
+------------------------------------------------------------------------
+
 ## More complicated examples `r emo::ji("gear")`
 
 You can create more complicated Shiny apps by loading R Scripts, packages, and data sets.
@@ -329,18 +346,6 @@ When it comes to sharing Shiny apps, you have two basic options:
 If you prefer the second option, I propose that you have a look at shinyapps.io. It's RStudio's hosting service for Shiny apps. shinyapps.io lets you upload your app straight from your R session to a server hosted by RStudio. You have complete control over your app including server administration tools. You can find out more about shinyapps.io by visiting [shinyapps.io](https://www.shinyapps.io/).
 
 The setup and installation for doing this is relatively straightforward, but requires all the standard boring steps, such as setting up an account, password and getting familiar with the website UI. Therefore we won't do this here. However, if you have questions you can find a detailed guide [here](https://docs.rstudio.com/shinyapps.io/).
-
-------------------------------------------------------------------------
-
-## Exercises
-
-Now it is your turn, adapt the Shiny app by:
-
-1.  Adding a widget that let's you subset by the film's genre:
-    -   Think about where you specify this?
-    -   Make sure to specify what the default option should be.
-    -   Genre Categories in the data include: Action, Adventure, Animation, Biography, Comedy, Crime, Documentary, Drama, Family, Fantasy, History, Horror, Music, Musical, Mystery, Romance, Sci-Fi, Short, Sport, Thriller, War, Western.
-2.  Turn our scatter plot into a bubble plot, where the size of the bubbles is determined by the revenues generated at the Box-Office.
 
 ------------------------------------------------------------------------
 
@@ -496,4 +501,4 @@ Here is a tutorial by [Andrew Hetherington](https://www.andrewhetherington.com/)
 
 The Shiny tutorial leans heavily on RStudio's series of [written shiny tutorials](https://shiny.rstudio.com/tutorial/). The running example of the shiny.app was adapted from: [Movies-Explorer Interactive App](https://github.com/rstudio/shiny-examples/tree/main/051-movie-explorer), while the running example of the flexdashboard was adapted from [Waste Lands - America's forgotten nuclear legacy](https://testing-apps.shinyapps.io/flexdashboard-leaflet-waste/).
 
-This script was drafted by [Tom Arendt](https://github.com/tom-arend) and [Lisa Oswald](https://lfoswald.github.io/), with contributions by [Steve Kerr](https://smkerr.github.io/), [Hiba Ahmad](https://github.com/hiba-ahmad), [Carmen Garro](https://github.com/cgarroca), and [Sebastian Ramirez-Ruiz](https://seramirezruiz.github.io/).
+This script was drafted by [Tom Arendt](https://github.com/tom-arend) and [Lisa Oswald](https://lfoswald.github.io/), with contributions by [Steve Kerr](https://smkerr.github.io/), [Hiba Ahmad](https://github.com/hiba-ahmad), [Carmen Garro](https://github.com/cgarroca), [Sebastian Ramirez-Ruiz](https://seramirezruiz.github.io/), [Killian Conyngham](https://github.com/Killian-Conyngham) and [Carol Sobral](https://github.com/cbsobral).
