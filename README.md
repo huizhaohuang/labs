@@ -11,9 +11,9 @@
 7. Modelling \[[**.html**](https://rawcdn.githack.com/intro-to-data-science-25/labs/0485ae8205743778b5c39f8b5653974b1c07cf56/session-07-modelling/7-modelling.html) | [**.Rmd**](https://github.com/intro-to-data-science-25/labs/blob/main/session-07-modelling/7-modelling.Rmd)\]
 8. Visualization \[[**.html**](https://raw.githack.com/intro-to-data-science-25/labs/main/session-08-visualization/8-visualization.html#) | [**.Rmd**](https://github.com/intro-to-data-science-25/labs/blob/main/session-08-visualization/8-visualization.Rmd)\]
 9. Shiny and Dashboards \[[**.html**](https://rawcdn.githack.com/intro-to-data-science-25/labs/05019768d9e44e439c8814924370705ec9dca7a9/session-09-shiny/9-shiny.html)) | [**.Rmd**](https://github.com/intro-to-data-science-25/labs/blob/main/session-09-shiny/9-shiny.Rmd)\]
+10. Flexdashboards \[[**.html**](https://raw.githack.com/intro-to-data-science-25/labs/main/session-10-flexdash/10-flex.html) | [**.Rmd**](https://github.com/intro-to-data-science-24/labs/blob/main/session-09-packaging/09-packaging.Rmd)\]
 <!--
-11. Packaging in R \[[**slides**](https://rawcdn.githack.com/intro-to-data-science-24/labs/103dc6669d808931659d14afdbc22998da1c7cb6/session-09-packaging/helper_slides.html) | [**.html**](https://rawcdn.githack.com/intro-to-data-science-24/labs/103dc6669d808931659d14afdbc22998da1c7cb6/session-09-packaging/09-packaging.html) | [**.Rmd**](https://github.com/intro-to-data-science-24/labs/blob/main/session-09-packaging/09-packaging.Rmd)\]
-12. Flexdashboards and Shiny Apps \[[**.html**](https://rawcdn.githack.com/intro-to-data-science-24/labs/c40c01de2fec96e25ab56ae2cdddeb2d38bb4352/session-10-shiny/10-shiny.html) | [**.Rmd**](https://github.com/intro-to-data-science-24/labs/blob/main/session-10-shiny/10-shiny.Rmd)\]
+13. Flexdashboards and Shiny Apps \[[**.html**](https://rawcdn.githack.com/intro-to-data-science-24/labs/c40c01de2fec96e25ab56ae2cdddeb2d38bb4352/session-10-shiny/10-shiny.html) | [**.Rmd**](https://github.com/intro-to-data-science-25/labs/blob/main/session-10-flexdash/10-flex.Rmd)\]
 -->
 
 ## Instructors
