@@ -56,8 +56,7 @@ sites$campus <- ifelse(grepl("University", sites$site.name) |
 sites$campuscol <- ifelse(sites$campus == 1, "#c93434", "black")
 ```
 
-Column {data-width=650}
------------------------------------------------------------------------
+## Column {data-width="650"}
 
 ### All sites and their current status
 
@@ -84,8 +83,7 @@ leaflet::leaflet() %>%
                      opacity = 0.8)
 ```
 
-Column {data-width=350}
------------------------------------------------------------------------
+## Column {data-width="350"}
 
 ### Number of sites
 

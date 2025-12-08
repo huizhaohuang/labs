@@ -72,7 +72,8 @@ knitr::knit_hooks$set(output = function(x, options) {
 })
 
 colorise <- function(x, color) {
-  if (knitr::is_latex_output()) {
+  if (knit
+      r::is_latex_output()) {
     sprintf("\\textcolor{%s}{%s}", color, x)
   } else if (knitr::is_html_output()) {
     sprintf("<span style='color: %s;'>%s</span>", color,
@@ -100,6 +101,7 @@ Shiny is an R package that makes it easy to build interactive web applications (
 ```{r, eval = F}
 #install.packages("shiny")
 library(shiny)
+library(bslib)
 ```
 
 For a quick illustration of what you can do with Shiny head over to the interactive visualization tool for the [Freedom of Press Index](https://gallery.shinyapps.io/freedom-press-index/?_ga=2.102672455.730641241.1638195397-1221361119.1634646993#home)
@@ -107,6 +109,61 @@ For a quick illustration of what you can do with Shiny head over to the interact
 Throughout the lab we will use a running example to illustrate the different aspects of creating a shiny app. You can find it in the folder `our_app`. It is an interactive plot that displays all movies on Rotten Tomatoes and includes several filtering options.
 
 ------------------------------------------------------------------------
+```{r}
+
+ui <- page_sidebar(
+  title = "Hello World!",
+  sidebar = sidebar(
+    sliderInput(
+      inputId = "bins",
+      label = "Number of bins:",
+      min = 5,
+      max = 50,
+      value = 30
+    )
+  ),
+  plotOutput(outputId = "distPlot")
+)
+
+server <- function(input, output) {
+
+  output$distPlot <- renderPlot({
+
+    x <- faithful$waiting
+    bins <- seq(min(x), max(x), length.out = input$bins + 1)
+
+    hist(
+      x,
+      breaks = bins,
+      col = "#007bc2",
+      border = "orange",
+      xlab = "Waiting time to next eruption (in mins)",
+      main = "Histogram of waiting times"
+    )
+  })
+
+}
+
+shinyApp(ui = ui, server = server)
+```
+
+```{r}
+
+ui <- page_sidebar(
+  title = "title panel",
+  sidebar = sidebar("sidebar"),
+  "main contents"
+)
+
+server <- function(input, output){
+  
+  
+}
+
+shinyApp(ui = ui, server = server)
+
+```
+
 
 ### Structure of a Shiny App
 
@@ -315,6 +372,7 @@ Now it is your turn, adapt the Shiny app by:
     -   Focus on filtering for only one genre at a time.
     -   Make sure to specify what the default option should be and how we should handle it.
     -   Genre Categories in the data include: Action, Adventure, Animation, Biography, Comedy, Crime, Documentary, Drama, Family, Fantasy, History, Horror, Music, Musical, Mystery, Romance, Sci-Fi, Short, Sport, Thriller, War, Western.
+
 
 :::
 ------------------------------------------------------------------------

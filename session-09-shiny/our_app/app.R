@@ -84,6 +84,7 @@ ui <- fluidPage(
            # specifying plotly::ggplotly() output
            plotlyOutput("plot1"),
            wellPanel(
+             h4("Graph"),
              span("Number of movies selected:",
                   textOutput("n_movies")
              )
